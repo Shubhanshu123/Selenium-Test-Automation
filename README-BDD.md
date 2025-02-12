@@ -136,3 +136,80 @@ Explore Cucumber's Documentation: To get more in-depth knowledge about using Ghe
 Look Into Other BDD Tools: Such as JBehave or SpecFlow (for .NET) if you're working in different environments.
 
 Practice Writing Scenarios: Start by translating some of your existing test cases into Gherkin to see how it enhances clarity.
+
+##Using Filters with Cucumber CLI
+Cucumber CLI provides several filtering options to run specific scenarios or groups of scenarios. Here are some common filters:
+
+#Run Specific Scenarios by Name:
+
+Use the --name option followed by a regular expression to match scenario names.
+
+```bash
+mvn test -Dcucumber.options="--name 'My Specific Scenario'"
+```
+#Run Scenarios with Tags:
+
+Use the --tags option to run scenarios tagged with specific keywords.
+
+```bash
+mvn test -Dcucumber.options="--tags '@smokeTest'"
+```
+You can combine multiple tags using logical operators:
+
+```bash
+mvn test -Dcucumber.options="--tags '@smokeTest or @regressionTest'"
+```
+#Run Scenarios from a Specific File:
+
+Specify the path to a particular feature file:
+
+```bash
+mvn test -Dcucumber.options="classpath:features/my_feature.feature"
+```
+#Run Scenarios from a Specific Line:
+
+Target a specific scenario within a file:
+
+```bash
+mvn test -Dcucumber.options="classpath:features/my_feature.feature:3"
+```
+Example Command:
+#Here's an example command that combines several filters:
+
+```bash
+mvn test -Dcucumber.options="--tags '@smokeTest or @regressionTest' --name 'Login'"
+```
+This command will run scenarios tagged with @smokeTest or @regressionTest and whose names contain "Login".
+
+Additional Tips:
+Order of Execution:
+
+You can specify the order in which scenarios should run:
+
+```bash
+mvn test -Dcucumber.options="--order defined"
+```
+Other options include random to run scenarios in random order, and reverse to run them in reverse order.
+
+Generate Reports:
+
+Configure your pom.xml to generate Cucumber reports for better visibility into test results.
+
+For example, to generate a JSON report:
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.2</version>
+            <configuration>
+                <systemPropertyVariables>
+                    <cucumber.options>--plugin json:target/cucumber-reports/Cucumber.json</cucumber.options>
+                </systemPropertyVariables>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
